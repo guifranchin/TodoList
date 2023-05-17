@@ -3,6 +3,7 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --purple: #8385fa;
+  --purple-dark: #5E60CE;
 
   --gray-700: #0d0d0d;
   --gray-600: #1a1a1a;

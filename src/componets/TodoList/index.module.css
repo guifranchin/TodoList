@@ -21,7 +21,15 @@
   min-width: 660px;
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
+}
+
+.text_scratched{
+  color: var(--gray-300);
+  min-width: 660px;
+  font-style: normal;
+  font-size: 14px;
+  text-decoration: line-through;
 }
 
 .trash{
@@ -38,7 +46,6 @@
 
 input[type="checkbox"] {
     appearance: none;
-    background-color: #fff;
     margin: 0;
     font: inherit;
     color: var(--blue-dark);
@@ -82,4 +89,8 @@ input[type="checkbox"]:checked::after {
     transform-origin: bottom left;
     transform: rotate(45deg);
     color: white;
+}
+
+input[type="checkbox"]:hover{
+  filter: brightness(1.15)
 }

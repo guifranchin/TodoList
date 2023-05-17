@@ -38,7 +38,12 @@
 }
 
 .button:hover {
-  filter: brightness(1.5);
+  filter: brightness(1.25);
+}
+
+.button:disabled {
+  filter: grayscale(100%);
+  cursor: not-allowed;
 }
 
 .content_header {
@@ -76,4 +81,12 @@
   border-radius: 999px;
   background-color: var(--gray-400);
   color: var(--gray-200);
+}
+
+.input:focus{
+  filter: brightness(1.2)
+}
+
+.input:focus{
+  outline: 2px solid var(--purple-dark);
 }
