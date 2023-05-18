@@ -10,9 +10,7 @@ import useToDoContext from "../../hooks/useToDoContext";
 export const Content = () => {
   const [description, setDescription] = useState<string>("");
 
-
-  const { setTaskListState, taskListState} = useToDoContext()
-  
+  const { setTaskListState, taskListState } = useToDoContext();
 
   const tasksDone = taskListState.filter((task) => {
     return task.isDone !== false;
@@ -49,23 +47,24 @@ export const Content = () => {
     const task = taskListState.find((task) => task.id === id);
 
     if (task) {
-      api.patch("tasks/" + task.id, {
-        isDone: !task.isDone,
-      }).finally( () => {
-        const elements = taskListState.map((task) => {
-          if (task.id == id) {
-            return {
-              ...task,
-              isDone: !task.isDone,
-            };
-          }
-    
-          return task;
-        });
-        setTaskListState(elements);
-      })
-    }
+      api
+        .patch("tasks/" + task.id, {
+          isDone: !task.isDone,
+        })
+        .finally(() => {
+          const elements = taskListState.map((task) => {
+            if (task.id == id) {
+              return {
+                ...task,
+                isDone: !task.isDone,
+              };
+            }
 
+            return task;
+          });
+          setTaskListState(elements);
+        });
+    }
   };
 
   useEffect(() => {

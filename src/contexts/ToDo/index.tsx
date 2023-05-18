@@ -26,6 +26,6 @@ const ToDoContextProvider = ({ children }: ToDoContextProviderProps) => {
   );
 };
 
-export { ToDoContextProvider }
+export { ToDoContextProvider };
 
 export default ToDoContext;
