@@ -6,12 +6,15 @@ import { TodoList } from "../TodoList";
 import { Task } from "../../models/Task";
 import { v4 as uuidv4 } from "uuid";
 import { api } from "../../api";
+import useToDoContext from "../../hooks/useToDoContext";
 export const Content = () => {
   const [description, setDescription] = useState<string>("");
 
-  const [taskList, setTaskList] = useState<Task[]>([]);
 
-  const tasksDone = taskList.filter((task) => {
+  const { setTaskListState, taskListState} = useToDoContext()
+  
+
+  const tasksDone = taskListState.filter((task) => {
     return task.isDone !== false;
   });
 
@@ -24,29 +27,45 @@ export const Content = () => {
       isDone: false,
     };
 
-    setTaskList((currentValue) => [...currentValue, newTask]);
-    setDescription("");
+    api
+      .post("tasks", newTask)
+      .then((response) => {
+        setTaskListState((currentValue) => [...currentValue, newTask]);
+      })
+      .finally(() => {
+        setDescription("");
+      });
   };
 
   const removeTaskOnDelete = (id: string) => {
-    setTaskList((currentValue) =>
-      currentValue.filter((task) => task.id !== id)
-    );
+    api.delete("tasks/" + id).then((response) => {
+      setTaskListState((currentValue) =>
+        currentValue.filter((task) => task.id !== id)
+      );
+    });
   };
 
   const changeStatusCheckBox = (id: string) => {
-    const elements = taskList.map((task) => {
-      if (task.id == id) {
-        return {
-          ...task,
-          isDone: !task.isDone,
-        };
-      }
+    const task = taskListState.find((task) => task.id === id);
 
-      return task;
-    });
+    if (task) {
+      api.patch("tasks/" + task.id, {
+        isDone: !task.isDone,
+      }).finally( () => {
+        const elements = taskListState.map((task) => {
+          if (task.id == id) {
+            return {
+              ...task,
+              isDone: !task.isDone,
+            };
+          }
+    
+          return task;
+        });
+        setTaskListState(elements);
+      })
+    }
 
-    setTaskList(elements);
   };
 
   useEffect(() => {
@@ -56,7 +75,7 @@ export const Content = () => {
         return response.data;
       })
       .then((data) => {
-        setTaskList(data);
+        setTaskListState(data);
       });
   }, []);
 
@@ -85,22 +104,21 @@ export const Content = () => {
         <article className={style.content_header}>
           <article className={style.tasks_container}>
             <p className={style.task_created}>Tarefas Criadas</p>
-            <span className={style.span_value}>{taskList.length}</span>
+            <span className={style.span_value}>{taskListState.length}</span>
           </article>
           <article className={style.tasks_container}>
             <p className={style.tasks_done}>Concluidas</p>
             <span className={style.span_value}>
               {" "}
-              {tasksDone.length} de {taskList.length}
+              {tasksDone.length} de {taskListState.length}
             </span>
           </article>
         </article>
 
-        {!taskList.length ? (
+        {!taskListState.length ? (
           <NoContent />
         ) : (
           <TodoList
-            list={taskList}
             changeStatusCheckBox={changeStatusCheckBox}
             onDelete={removeTaskOnDelete}
           />
