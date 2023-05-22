@@ -1,6 +1,5 @@
 import styles from "./index.module.css";
 import Trash from "../../assets/trash.svg";
-import { Task } from "../../models/Task";
 import useToDoContext from "../../hooks/useToDoContext";
 
 interface TodoListProps {

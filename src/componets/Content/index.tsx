@@ -3,14 +3,17 @@ import Plus from "../../assets/plus.svg";
 import { NoContent } from "../NoContent";
 import { useState, useEffect } from "react";
 import { TodoList } from "../TodoList";
-import { Task } from "../../models/Task";
 import { v4 as uuidv4 } from "uuid";
 import { api } from "../../api";
 import useToDoContext from "../../hooks/useToDoContext";
+import { Toast } from "../Toats";
+import useToastContext from "../../hooks/useToast";
 export const Content = () => {
   const [description, setDescription] = useState<string>("");
 
   const { setTaskListState, taskListState } = useToDoContext();
+
+  const {showToast} = useToastContext()
 
   const tasksDone = taskListState.filter((task) => {
     return task.isDone !== false;
@@ -27,16 +30,17 @@ export const Content = () => {
 
     api
       .post("tasks", newTask)
-      .then((response) => {
+      .then(() => {
         setTaskListState((currentValue) => [...currentValue, newTask]);
       })
       .finally(() => {
         setDescription("");
+        showToast({message: "Tarefa adicionada com sucesso", type: "success"})
       });
   };
 
   const removeTaskOnDelete = (id: string) => {
-    api.delete("tasks/" + id).then((response) => {
+    api.delete("tasks/" + id).then(() => {
       setTaskListState((currentValue) =>
         currentValue.filter((task) => task.id !== id)
       );
