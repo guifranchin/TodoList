@@ -7,10 +7,16 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { NotFound } from './componets/NotFound/index.tsx';
+import { Home } from './componets/Home/index.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Home/>,
+    errorElement: <NotFound/>
+  },
+  {
+    path: "/to-do",
     element: <App/>,
     errorElement: <NotFound/>
   },
