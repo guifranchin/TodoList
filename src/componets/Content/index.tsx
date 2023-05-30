@@ -6,7 +6,6 @@ import { TodoList } from "../TodoList";
 import { v4 as uuidv4 } from "uuid";
 import { api } from "../../api";
 import useToDoContext from "../../hooks/useToDoContext";
-import { Toast } from "../Toats";
 import useToastContext from "../../hooks/useToast";
 export const Content = () => {
   const [description, setDescription] = useState<string>("");
