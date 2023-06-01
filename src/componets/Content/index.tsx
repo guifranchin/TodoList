@@ -12,7 +12,7 @@ export const Content = () => {
 
   const { setTaskListState, taskListState } = useToDoContext();
 
-  const {showToast} = useToastContext()
+  const { showToast } = useToastContext();
 
   const tasksDone = taskListState.filter((task) => {
     return task.isDone !== false;
@@ -32,18 +32,29 @@ export const Content = () => {
       .then(() => {
         setTaskListState((currentValue) => [...currentValue, newTask]);
       })
+      .catch(() => {
+        showToast({ message: "Algo deu errado", type: "danger" });
+      })
       .finally(() => {
         setDescription("");
-        showToast({message: "Tarefa adicionada com sucesso", type: "success"})
+        showToast({
+          message: "Tarefa adicionada com sucesso",
+          type: "success",
+        });
       });
   };
 
   const removeTaskOnDelete = (id: string) => {
-    api.delete("tasks/" + id).then(() => {
-      setTaskListState((currentValue) =>
-        currentValue.filter((task) => task.id !== id)
-      );
-    });
+    api
+      .delete("tasks/" + id)
+      .then(() => {
+        setTaskListState((currentValue) =>
+          currentValue.filter((task) => task.id !== id)
+        );
+      })
+      .catch(() => {
+        showToast({ message: "Algo deu errado", type: "danger" });
+      });
   };
 
   const changeStatusCheckBox = (id: string) => {
@@ -53,6 +64,9 @@ export const Content = () => {
       api
         .patch("tasks/" + task.id, {
           isDone: !task.isDone,
+        })
+        .catch(() => {
+          showToast({ message: "Algo deu errado", type: "danger" });
         })
         .finally(() => {
           const elements = taskListState.map((task) => {
