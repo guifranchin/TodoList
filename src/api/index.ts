@@ -5,6 +5,3 @@ export const api = axios.create({
   // headers: { "X-Jsio-Token": "31067ca705373bf18d7c3e1277583b3b" },
 });
 
-export const apiRequest = async <T> () =>{
-
-}
